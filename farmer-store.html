@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Store - Farmer Marketplace</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">🌾 Farmer Marketplace</h1>
+            <ul class="nav-menu">
+                <li><a href="buyer-home.html">Home</a></li>
+                <li><a href="cart.html">Cart (<span id="cartCount">0</span>)</a></li>
+                <li><a href="#" id="logoutBtn">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="farmer-header">
+            <button class="btn btn-secondary" onclick="history.back()">← Back</button>
+            <div id="farmerInfo"></div>
+        </div>
+
+        <div class="products-section">
+            <h2>Available Products</h2>
+            <div id="productsList" class="products-grid"></div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/buyer.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const farmerId = urlParams.get('id');
+
+        if (!farmerId) {
+            alert('Farmer not found');
+            window.location.href = 'buyer-home.html';
+        }
+
+        async function loadFarmerStore() {
+            try {
+                const farmers = await apiCall('/api/farmers/nearby', 'GET');
+                const farmer = farmers.find(f => f.userId._id === farmerId);
+                
+                if (farmer) {
+                    document.getElementById('farmerInfo').innerHTML = `
+                        <h1>${farmer.name}</h1>
+                        <p><strong>Location:</strong> ${farmer.location}</p>
+                        <p><strong>Phone:</strong> ${farmer.phone}</p>
+                        <p>${farmer.description || ''}</p>
+                    `;
+                }
+
+                const products = await apiCall(`/api/farmers/${farmerId}/products`, 'GET');
+                displayProducts(products);
+            } catch (error) {
+                alert('Error loading farmer store: ' + error.message);
+            }
+        }
+
+        loadFarmerStore();
+    </script>
+</body>
+</html>

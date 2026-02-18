@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Dashboard - Farm To Family</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">🌾 Farm To Family</h1>
+            <ul class="nav-menu">
+                <li><a href="delivery-dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="#" id="logoutBtn">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>Delivery Dashboard</h1>
+            <p>Welcome, <strong id="deliveryName"></strong></p>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>My Profile</h2>
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="vehicleType">Vehicle Type</label>
+                        <input type="text" id="vehicleType" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="currentLocation">Current Location</label>
+                        <input type="text" id="currentLocation" required>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="available"> Available for deliveries
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </form>
+            </div>
+        </div>
+<div class="card">
+    <h2>📦 My Assigned Orders</h2>
+    <div id="assignedOrdersList"></div>
+</div>
+        <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>Live Orders (Unassigned)</h2>
+        <button class="btn btn-primary" id="refreshLiveOrdersBtn">🔄 Refresh</button>
+    </div>
+    <div id="liveOrdersList"></div>
+</div>
+
+        <div id="orderModal" class="modal">
+            <div class="modal-content modal-large">
+                <span class="close">&times;</span>
+                <h2>Order Details</h2>
+                <div id="orderDetails"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/delivery.js"></script>
+</body>
+</html>

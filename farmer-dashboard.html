@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Dashboard - Farmer Marketplace</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">🌾 Farm To Family</h1>
+            <ul class="nav-menu">
+                <li><a href="farmer-dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="#" id="ordersLink">My Orders</a></li>
+                <li><a href="#" id="logoutBtn">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>Farmer Dashboard</h1>
+            <p>Welcome, <strong id="farmerName"></strong></p>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>My Profile</h2>
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>Add New Product</h2>
+                <form id="addProductForm">
+                    <div class="form-group">
+                        <label for="productName">Product Name</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <input type="text" id="category" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="price">Price</label>
+                            <input type="number" id="price" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="number" id="quantity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="unit">Unit</label>
+                            <input type="text" id="unit" placeholder="kg, pcs" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="productDescription">Description</label>
+                        <textarea id="productDescription" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="productImage">Product Image</label>
+                        <input type="file" id="productImage" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>My Products</h2>
+            <div id="productsList" class="products-grid"></div>
+        </div>
+
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Edit Product</h2>
+                <form id="editProductForm">
+                    <input type="hidden" id="editProductId">
+                    <div class="form-group">
+                        <label for="editProductName">Product Name</label>
+                        <input type="text" id="editProductName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCategory">Category</label>
+                        <input type="text" id="editCategory" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editPrice">Price</label>
+                            <input type="number" id="editPrice" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editQuantity">Quantity</label>
+                            <input type="number" id="editQuantity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editUnit">Unit</label>
+                            <input type="text" id="editUnit" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editProductDescription">Description</label>
+                        <textarea id="editProductDescription" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editProductImage">Change Image (Optional)</label>
+                        <input type="file" id="editProductImage" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/farmer.js"></script>
+</body>
+</html>

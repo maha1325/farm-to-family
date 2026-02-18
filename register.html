@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Farm To Family</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-box register-box">
+            <h1>Farm To Family</h1>
+            <h2>Register</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Register As</label>
+                    <select id="role" required>
+                        <option value="">Select Role</option>
+                        <option value="buyer">Buyer</option>
+                        <option value="farmer">Farmer</option>
+                        <option value="delivery">Delivery Person</option>
+                    </select>
+                </div>
+                
+                <div id="farmerFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div id="deliveryFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="vehicleType">Vehicle Type</label>
+                        <input type="text" id="vehicleType">
+                    </div>
+                    <div class="form-group">
+                        <label for="currentLocation">Current Location</label>
+                        <input type="text" id="currentLocation">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+            <p class="form-footer">
+                Already have an account? <a href="login.html">Login here</a>
+            </p>
+        </div>
+    </div>
+    <script src="js/api.js"></script>
+    <script>
+        const roleSelect = document.getElementById('role');
+        const farmerFields = document.getElementById('farmerFields');
+        const deliveryFields = document.getElementById('deliveryFields');
+
+        roleSelect.addEventListener('change', (e) => {
+            farmerFields.style.display = 'none';
+            deliveryFields.style.display = 'none';
+            
+            if (e.target.value === 'farmer') {
+                farmerFields.style.display = 'block';
+            } else if (e.target.value === 'delivery') {
+                deliveryFields.style.display = 'block';
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const role = document.getElementById('role').value;
+            const payload = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                password: document.getElementById('password').value,
+                role: role
+            };
+
+            if (role === 'farmer') {
+                payload.location = document.getElementById('location').value;
+                payload.description = document.getElementById('description').value;
+            } else if (role === 'delivery') {
+                payload.vehicleType = document.getElementById('vehicleType').value;
+                payload.currentLocation = document.getElementById('currentLocation').value;
+            }
+
+            try {
+                const data = await apiCall('/api/auth/register', 'POST', payload);
+                
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('role', data.user.role);
+                localStorage.setItem('userId', data.user.id);
+                localStorage.setItem('userName', data.user.name);
+
+                alert('Registration successful!');
+                
+                if (role === 'farmer') {
+                    window.location.href = 'farmer-dashboard.html';
+                } else if (role === 'buyer') {
+                    window.location.href = 'buyer-home.html';
+                } else if (role === 'delivery') {
+                    window.location.href = 'delivery-dashboard.html';
+                }
+            } catch (error) {
+                alert('Registration failed: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

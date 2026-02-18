@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Farmer Marketplace</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">🌾 Farmer Marketplace</h1>
+            <ul class="nav-menu">
+                <li><a href="buyer-home.html">Home</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="#" id="logoutBtn">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="checkout-container">
+            <h1>Checkout</h1>
+            
+            <div class="checkout-grid">
+                <div class="card">
+                    <h2>Delivery Information</h2>
+                    <form id="checkoutForm">
+                        <div class="form-group">
+                            <label for="deliveryAddress">Delivery Address</label>
+                            <textarea id="deliveryAddress" rows="3" required placeholder="Enter your complete delivery address"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="deliveryContact">Contact Number</label>
+                            <input type="tel" id="deliveryContact" required placeholder="Your phone number">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Place Order</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2>Order Summary</h2>
+                    <div id="orderSummary"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        checkAuth();
+
+        async function loadOrderSummary() {
+            try {
+                const cart = await apiCall('/api/cart', 'GET');
+                
+                if (!cart.items || cart.items.length === 0) {
+                    alert('Your cart is empty');
+                    window.location.href = 'buyer-home.html';
+                    return;
+                }
+
+                let totalPrice = 0;
+                let summaryHTML = '<div class="order-items">';
+
+                cart.items.forEach(item => {
+                    const product = item.productId;
+                    const itemTotal = item.price * item.quantity;
+                    totalPrice += itemTotal;
+
+                    summaryHTML += `
+                        <div class="summary-item">
+                            <span>${product.name} x ${item.quantity}</span>
+                            <span>₹${itemTotal.toFixed(2)}</span>
+                        </div>
+                    `;
+                });
+
+                summaryHTML += `
+                    </div>
+                    <div class="summary-total">
+                        <strong>Total:</strong>
+                        <strong>₹${totalPrice.toFixed(2)}</strong>
+                    </div>
+                `;
+
+                document.getElementById('orderSummary').innerHTML = summaryHTML;
+            } catch (error) {
+                alert('Error loading order summary: ' + error.message);
+            }
+        }
+
+        document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const deliveryAddress = document.getElementById('deliveryAddress').value;
+            const deliveryContact = document.getElementById('deliveryContact').value;
+
+            try {
+                await apiCall('/api/orders/checkout', 'POST', {
+                    deliveryAddress,
+                    deliveryContact
+                });
+
+                alert('Order placed successfully!');
+                window.location.href = 'buyer-home.html';
+            } catch (error) {
+                alert('Error placing order: ' + error.message);
+            }
+        });
+
+        loadOrderSummary();
+    </script>
+</body>
+</html>

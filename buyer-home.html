@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Home - Farm To Family</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="landing-page">
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">🌾 Farm To Family</h1>
+            <ul class="nav-menu">
+                <li><a href="buyer-home.html" class="active">Home</a></li>
+                <li><a href="cart.html">Cart (<span id="cartCount">0</span>)</a></li>
+                <li><a href="#" id="ordersLink">My Orders</a></li>
+                <li><a href="#" id="logoutBtn">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>Fresh from Local Farmers</h1>
+            <p>Discover and buy fresh produce directly from farmers near you</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="search-section">
+            <h2>Find Farmers Near You</h2>
+            <div class="search-bar">
+                <input type="text" id="locationSearch" placeholder="Enter your location...">
+                <button class="btn btn-primary" id="searchBtn">Search</button>
+            </div>
+        </div>
+
+        <div class="farmers-section">
+            <h2>Available Farmers</h2>
+            <div id="farmersList" class="farmers-grid"></div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/buyer.js"></script>
+</body>
+</html>

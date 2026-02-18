@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Farm To Family</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-box">
+            <h1>Farm To Family </h1>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <p class="form-footer">
+                Don't have an account? <a href="register.html">Register here</a>
+            </p>
+        </div>
+    </div>
+    <script src="js/api.js"></script>
+    <script>
+        if (localStorage.getItem('token')) {
+            const role = localStorage.getItem('role');
+            redirectByRole(role);
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const data = await apiCall('/api/auth/login', 'POST', { email, password });
+                
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('role', data.user.role);
+                localStorage.setItem('userId', data.user.id);
+                localStorage.setItem('userName', data.user.name);
+
+                alert('Login successful!');
+                redirectByRole(data.user.role);
+            } catch (error) {
+                alert('Login failed: ' + error.message);
+            }
+        });
+
+        function redirectByRole(role) {
+            if (role === 'farmer') {
+                window.location.href = 'farmer-dashboard.html';
+            } else if (role === 'buyer') {
+                window.location.href = 'buyer-home.html';
+            } else if (role === 'delivery') {
+                window.location.href = 'delivery-dashboard.html';
+            }
+        }
+    </script>
+</body>
+</html>
